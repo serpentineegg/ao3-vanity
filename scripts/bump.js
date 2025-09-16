@@ -61,17 +61,6 @@ function bumpVersion(currentVersion, bumpType) {
   return `${version.major}.${version.minor}.${version.patch}`;
 }
 
-function updatePackageJson(newVersion) {
-  try {
-    const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-    packageJson.version = newVersion;
-    fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2) + '\n');
-    console.log(`📦 Updated package.json to v${newVersion}`);
-  } catch (error) {
-    console.error('❌ Error updating package.json:', error.message);
-    process.exit(1);
-  }
-}
 
 function runCommand(command, description) {
   try {
@@ -126,15 +115,7 @@ function main() {
   const newVersion = bumpVersion(currentVersion, bumpType);
   console.log(`📈 New version: ${newVersion}`);
 
-  // Update package.json
-  updatePackageJson(newVersion);
-
-  // Build the project
-  runCommand('npm run build', 'Building project');
-
-  // Commit changes
-  runCommand('git add package.json dist/', 'Staging files');
-  runCommand(`git commit -m "chore: bump version to v${newVersion}"`, 'Committing version bump');
+  // Create and push tag directly
 
   // Create and push tag
   runCommand(`git tag v${newVersion}`, 'Creating git tag');
