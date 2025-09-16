@@ -1,6 +1,6 @@
 ## What it does
 
-Adds Twitter search links to AO3 works, allowing you to easily find social media discussions about fics. The script automatically detects works on various AO3 pages and adds clickable "Twitter" or "Twitter Links" to the stats.
+Adds Twitter search links to AO3 works, so that you can easily find social media discussions about fics. The script automatically detects works on various AO3 pages and adds clickable "Twitter" or "Twitter Links".
 
 ## How to use
 
