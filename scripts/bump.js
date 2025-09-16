@@ -124,7 +124,7 @@ function main() {
 
   console.log(`🎉 Successfully released v${newVersion}!`);
   console.log('🔗 GitHub Actions will now build and create the release automatically.');
-  console.log(`📦 Release will be available at: https://github.com/serpentineegg/fictrail/releases/tag/v${newVersion}`);
+  console.log(`📦 Release will be available at: https://github.com/serpentineegg/ao3-vanity/releases/tag/v${newVersion}`);
 }
 
 if (require.main === module) {
