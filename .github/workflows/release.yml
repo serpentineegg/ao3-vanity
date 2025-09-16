@@ -35,8 +35,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         gh release create v${{ steps.get_version.outputs.version }} \
-          --title "AO3 Twitter Search v${{ steps.get_version.outputs.version }}" \
-          --notes "## AO3 Twitter Search v${{ steps.get_version.outputs.version }}
+          --title "AO3 Vanity v${{ steps.get_version.outputs.version }}" \
+          --notes "## AO3 Vanity v${{ steps.get_version.outputs.version }}
 
         ### Installation
         1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension

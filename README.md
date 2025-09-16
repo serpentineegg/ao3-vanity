@@ -13,7 +13,7 @@ Built with love for the AO3 community.
 1. **Install Tampermonkey**
    - Install the [Tampermonkey browser extension](https://www.tampermonkey.net/) for your browser
 
-2. **Install AO3 Twitter Search**
+2. **Install AO3 Vanity Script**
    - **Option A:** [Install from Greasyfork](https://greasyfork.org/en/scripts/549743-ao3-twitter-search) (recommended)
    - **Option B:** [Download from GitHub releases](https://github.com/serpentineegg/ao3-vanity/releases/latest/download/script.user.js)
    - Tampermonkey will automatically detect the userscript and prompt you to install it

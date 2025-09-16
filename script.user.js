@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         AO3 Twitter Search
+// @name         AO3 Vanity
 // @namespace    https://github.com/serpentineegg/ao3-vanity
 // @version      0.0.0-dev
 // @description  Add Twitter search links to AO3 works
