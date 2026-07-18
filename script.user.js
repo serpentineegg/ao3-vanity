@@ -37,7 +37,9 @@
     const fragment = document.createDocumentFragment();
     SEARCH_PLATFORMS.forEach((platform, index) => {
       if (index > 0) {
-        fragment.appendChild(document.createTextNode(' · '));
+        // \u00b7 is a middle dot; escaped to keep this file pure ASCII
+        // (Greasyfork's sync mishandles non-ASCII bytes in release assets)
+        fragment.appendChild(document.createTextNode(' \u00b7 '));
       }
       const searchLink = document.createElement('a');
       searchLink.href = platform.createUrl(workId);
