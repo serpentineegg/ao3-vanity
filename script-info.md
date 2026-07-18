@@ -1,12 +1,12 @@
 ## What it does
 
-Adds Tumblr and Twitter search links to AO3 works, so that you can easily find social media discussions about fics. The script automatically detects works on various AO3 pages and adds clickable "Tumblr · Twitter" links.
+Adds Tumblr and Twitter search links to AO3 works, so that you can easily find social media discussions about fics. The script automatically detects works on various AO3 pages and adds clickable "Tumblr" and "Twitter" links.
 
 ## How to use
 
 1. Install the userscript
 2. Visit any [AO3 page](https://archiveofourown.org/) 
-3. Look for "Tumblr · Twitter" links in work stats sections on:
+3. Look for "Tumblr" and "Twitter" links in work stats sections on:
    - Individual work pages
    - Work listings and search results
    - Reading history pages
