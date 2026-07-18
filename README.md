@@ -1,10 +1,6 @@
 # AO3 Vanity Script
 
-A Tampermonkey userscript that adds Twitter search links to AO3 works, so you can easily find social media discussions about fics. Uses [twiiit.com](https://twiiit.com) for searching - no Twitter/X account required!
-
-*Sorry not sorry for deadnaming X* 🐦
-
-Other social media platforms coming soon.
+A Tampermonkey userscript that adds Tumblr and Twitter search links to AO3 works, so you can easily find social media discussions about fics. Tumblr search needs no account; Twitter search requires being logged in on x.com.
 
 Built with love for the AO3 community.
 
@@ -20,7 +16,7 @@ Built with love for the AO3 community.
 
 3. **Start Using**
    - Visit any [AO3 page](https://archiveofourown.org/)
-   - Look for "Twitter" or "Twitter Links" in the work stats sections
+   - Look for "Tumblr · Twitter" links in the work stats sections
    - Click the links to search for social media mentions of that work
 
 ## Privacy

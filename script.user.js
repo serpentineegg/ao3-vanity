@@ -2,7 +2,7 @@
 // @name         AO3 Vanity
 // @namespace    https://github.com/serpentineegg/ao3-vanity
 // @version      0.0.0-dev
-// @description  Add Twitter search links to AO3 works
+// @description  Add Tumblr and Twitter search links to AO3 works
 // @author       serpentineegg
 // @match        *://archiveofourown.org/*
 // @grant        GM_addStyle
@@ -13,33 +13,49 @@
 (function () {
   'use strict';
 
-  // Create Twitter search URL using twiiit.com
-  function createTwitterSearchUrl(workUrl) {
-    const cleanUrl = workUrl.replace('https://', '');
-    const encodedUrl = encodeURIComponent(cleanUrl);
-    return `https://twiiit.com/search?f=tweets&q=${encodedUrl}`;
+  // Platforms to search for mentions of a work. Tumblr matches the
+  // exact work URL in post links without login. Twitter search only
+  // works logged in on x.com: its url: operator matches the expanded
+  // URLs of t.co links, so results are specific to this work.
+  const SEARCH_PLATFORMS = [
+    {
+      name: 'Tumblr',
+      title: 'Search Tumblr for mentions of this work',
+      createUrl: workId =>
+        `https://www.tumblr.com/search/${encodeURIComponent(`archiveofourown.org/works/${workId}`)}`
+    },
+    {
+      name: 'Twitter',
+      title: 'Search Twitter for mentions of this work (requires being logged in on x.com)',
+      createUrl: workId =>
+        `https://x.com/search?q=${encodeURIComponent(`url:archiveofourown.org/works/${workId}`)}&f=live`
+    }
+  ];
+
+  // Create search link elements for all platforms, separated by dots
+  function createSearchLinks(workId) {
+    const fragment = document.createDocumentFragment();
+    SEARCH_PLATFORMS.forEach((platform, index) => {
+      if (index > 0) {
+        fragment.appendChild(document.createTextNode(' · '));
+      }
+      const searchLink = document.createElement('a');
+      searchLink.href = platform.createUrl(workId);
+      searchLink.target = '_blank';
+      searchLink.rel = 'noopener noreferrer';
+      searchLink.textContent = platform.name;
+      searchLink.title = platform.title;
+      fragment.appendChild(searchLink);
+    });
+    return fragment;
   }
 
-  // Create a Twitter search link element
-  function createTwitterLink(twitterUrl, linkText = 'Twitter') {
-    const searchLink = document.createElement('a');
-    searchLink.href = twitterUrl;
-    searchLink.target = '_blank';
-    searchLink.rel = 'noopener noreferrer';
-    searchLink.className = 'twitter-links';
-    searchLink.textContent = linkText;
-    searchLink.title = 'Search Twitter for mentions of this work';
-    return searchLink;
-  }
-
-  // Add Twitter search info to any work stats section
-  function addTwitterSearchToStats(workElement, workUrl) {
+  // Add search links to any work stats section
+  function addSearchLinksToStats(workElement, workId) {
     // Check if already exists
-    if (workElement.querySelector('.twitter-links')) {
+    if (workElement.querySelector('.ao3-vanity-links')) {
       return;
     }
-
-    const twitterUrl = createTwitterSearchUrl(workUrl);
 
     // Check if this is a work.meta.group first
     if (workElement.matches('dl.work.meta.group')) {
@@ -47,12 +63,12 @@
       const statsSection = workElement.querySelector('dd.stats');
       if (statsSection) {
         const dt = document.createElement('dt');
-        dt.className = 'twitter-links';
+        dt.className = 'ao3-vanity-links';
         dt.textContent = 'External Links:';
 
         const dd = document.createElement('dd');
-        dd.className = 'twitter-links';
-        dd.appendChild(createTwitterLink(twitterUrl));
+        dd.className = 'ao3-vanity-links';
+        dd.appendChild(createSearchLinks(workId));
 
         // Insert after the stats section
         const nextSibling = statsSection.nextSibling;
@@ -81,10 +97,10 @@
 
     // Create the dd wrapper element
     const dd = document.createElement('dd');
-    dd.className = 'twitter-links';
-    dd.appendChild(createTwitterLink(twitterUrl, 'Twitter Links'));
+    dd.className = 'ao3-vanity-links';
+    dd.appendChild(createSearchLinks(workId));
 
-    // For regular stats containers, append the wrapped link
+    // For regular stats containers, append the wrapped links
     statsContainer.appendChild(dd);
   }
 
@@ -104,26 +120,23 @@
       const workElements = document.querySelectorAll(selector);
 
       workElements.forEach(workElement => {
-        let workUrl = null;
+        let workId = null;
 
-        // Try to find the work URL in different ways
+        // Try to find the work ID in different ways
         const titleLink = workElement.querySelector('h4.heading a[href*="/works/"]');
         if (titleLink) {
-          workUrl = titleLink.href;
+          workId = titleLink.href.match(/\/works\/(\d+)/)?.[1];
         } else if (selector === 'div.work.meta' || selector === 'dl.work.meta.group') {
           // For individual work pages
-          workUrl = window.location.href;
+          workId = window.location.pathname.match(/\/works\/(\d+)/)?.[1];
         } else {
           // Try to find work ID in element attributes
-          const workId = workElement.id?.match(/work[_-](\d+)/)?.[1] ||
+          workId = workElement.id?.match(/work[_-](\d+)/)?.[1] ||
             workElement.className?.match(/work-(\d+)/)?.[1];
-          if (workId) {
-            workUrl = `https://archiveofourown.org/works/${workId}`;
-          }
         }
 
-        if (workUrl) {
-          addTwitterSearchToStats(workElement, workUrl);
+        if (workId) {
+          addSearchLinksToStats(workElement, workId);
         }
       });
     });
@@ -139,8 +152,8 @@
       mutations.forEach(function (mutation) {
         if (mutation.addedNodes.length > 0) {
           // Debounce the processing to avoid excessive calls
-          clearTimeout(window.twitterSearchTimeout);
-          window.twitterSearchTimeout = setTimeout(processAllWorks, 500);
+          clearTimeout(window.ao3VanityTimeout);
+          window.ao3VanityTimeout = setTimeout(processAllWorks, 500);
         }
       });
     });
