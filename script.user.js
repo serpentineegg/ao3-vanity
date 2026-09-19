@@ -122,7 +122,7 @@
       const workElements = document.querySelectorAll(selector);
 
       workElements.forEach(workElement => {
-        let workId = null;
+        let workId;
 
         // Try to find the work ID in different ways
         const titleLink = workElement.querySelector('h4.heading a[href*="/works/"]');
