@@ -16,11 +16,18 @@
   // Platforms to search for mentions of a work. Tumblr matches the
   // exact work URL in post links without login. Twitter search only
   // works logged in on x.com: its url: operator matches the expanded
-  // URLs of t.co links, so results are specific to this work.
+  // URLs of t.co links, so results are specific to this work. Use the
+  // default Top tab (no &f=live): X excludes posts from small or
+  // sensitive-flagged accounts from the Latest tab, so f=live shows
+  // "No results" for posts that Top finds.
   const SEARCH_PLATFORMS = [
     {
       name: 'Tumblr',
       title: 'Search Tumblr for mentions of this work',
+      // Note: Tumblr Communities posts are excluded from this general
+      // search entirely; they're only searchable from within the
+      // specific community they were posted in, which isn't knowable
+      // ahead of time from an AO3 work alone.
       createUrl: workId =>
         `https://www.tumblr.com/search/${encodeURIComponent(`archiveofourown.org/works/${workId}`)}`
     },
@@ -28,7 +35,7 @@
       name: 'Twitter',
       title: 'Search Twitter for mentions of this work (requires being logged in on x.com)',
       createUrl: workId =>
-        `https://x.com/search?q=${encodeURIComponent(`url:archiveofourown.org/works/${workId}`)}&f=live`
+        `https://x.com/search?q=${encodeURIComponent(`url:archiveofourown.org/works/${workId}`)}`
     }
   ];
 
